@@ -19,6 +19,7 @@ export default function PromptStyleForm({
                 </label>
                 <textarea
                     id="prompt"
+                    data-testid="prompt-input"
                     value={prompt}
                     onChange={(e) => onPromptChange(e.target.value)}
                     rows={3}
@@ -32,6 +33,7 @@ export default function PromptStyleForm({
                 </label>
                 <select
                     id="style"
+                    data-testid="style-select"
                     value={style}
                     onChange={(e) => onStyleChange(e.target.value)}
                     className="w-full rounded-xl border px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"

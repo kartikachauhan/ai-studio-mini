@@ -2,13 +2,15 @@ type Props = {
     imageDataUrl: string | null;
     prompt: string;
     style: string;
+    isPending: boolean;
 };
 
-export default function SummaryCard({ imageDataUrl, prompt, style }: Props) {
+export default function SummaryCard({ imageDataUrl, prompt, style, isPending }: Props) {
     return (
         <section
             className="rounded-2xl border bg-white p-4 space-y-3"
             aria-live="polite"
+            aria-busy={isPending}
         >
             <h2 className="text-lg font-semibold">Live Summary</h2>
 
