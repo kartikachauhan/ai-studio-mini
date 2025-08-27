@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md,json}\"",
-    "test": "vitest"
+    "test": "vitest",
+    "e2e": "playwright test", 
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "react": "^19.1.1",

@@ -1,69 +1,56 @@
-# React + TypeScript + Vite
+# AI Studio Mini
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + TypeScript web app that simulates a simplified AI studio:
+- Upload PNG/JPG (≤10MB). If large, downscale client-side to ≤1920px.
+- Prompt input + style dropdown (Editorial / Streetwear / Vintage).
+- Live summary (image + prompt + style).
+- Mock “Generate” API (1–2s delay, 20% error), automatic retry with exponential backoff (max 3), abortable.
+- History: last 5 generations in localStorage. Click to restore.
+- Accessibility: keyboard navigable, visible focus, aria-live status.
+- Tests: unit (Vitest + RTL) and E2E (Playwright).
+- PWA basics (manifest + offline caching).
+- Error boundaries & empty states.
 
-Currently, two official plugins are available:
+## Tech
+- Vite + React + TypeScript (strict)
+- Tailwind CSS (v4)
+- ESLint + Prettier
+- Vitest + React Testing Library
+- Playwright
+- vite-plugin-pwa
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## Getting Started
+```bash
+npm i
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## Build & Preview
+```bash
+npm run build
+npm run preview
 ```
+
+## Tests
+```bash
+npm run test           # unit
+npx playwright test    # e2e
+```
+
+# Design Notes
+- Images are decoded with createImageBitmap and normalized through a high-quality canvas downscale to ≤1920px.
+
+- Mock API simulates latency and 20% overload errors; runWithRetry uses exponential backoff (with jitter) and supports abort via AbortController.
+
+- History is kept to last 5 items and restored on click.
+
+- Accessibility: inputs fully labeled, aria-live role="status" for generating/success/error, strong focus rings.
+
+# TODOs / Nice-to-haves
+- Drag & drop upload
+
+- Deterministic error injection toggle in UI for demos
+
+- Theming switch (dark mode)
+
+- More styles & presets
