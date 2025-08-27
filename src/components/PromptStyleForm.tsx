@@ -20,6 +20,7 @@ export default function PromptStyleForm({
                 <textarea
                     id="prompt"
                     data-testid="prompt-input"
+                    placeholder="Describe your idea… e.g. “Pop art T-shirt design of a comic book superhero”"
                     value={prompt}
                     onChange={(e) => onPromptChange(e.target.value)}
                     rows={3}

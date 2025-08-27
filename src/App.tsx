@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react';
+import './App.css';
+
 import UploadArea from './components/UploadArea';
 import type { UploadAreaHandle } from './components/UploadArea';
 import PromptStyleForm from './components/PromptStyleForm';
@@ -76,7 +78,7 @@ export default function App() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 text-slate-900">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="mx-auto max-w-5xl p-6">
         <h1 className="text-2xl font-bold">AI Studio Mini</h1>
         <p className="text-sm text-slate-600">Upload → Prompt & Style → Generate (mock)</p>
@@ -100,7 +102,7 @@ export default function App() {
               className="rounded-2xl px-4 py-2 bg-indigo-600 text-black font-medium 
               hover:bg-indigo-700 focus:outline-none focus:ring-2 
               focus:ring-offset-2 focus:ring-indigo-500 
-              disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled:opacity-60 disabled:bg-indigo-300 disabled:cursor-not-allowed"
               disabled={!imageDataUrl || !prompt || isPending}
               aria-disabled={!imageDataUrl || !prompt || isPending}
               onClick={onGenerate}
@@ -113,7 +115,8 @@ export default function App() {
               className="rounded-2xl px-4 py-2 border border-red-300 text-red-700 
               font-medium bg-red-50 hover:bg-red-100 
               focus:outline-none focus:ring-2 focus:ring-offset-2 
-              focus:ring-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              focus:ring-red-400 
+              disabled:opacity-60 disabled:text-red-300 disabled:border-red-200 disabled:bg-red-50 disabled:cursor-not-allowed"
               onClick={abort}
               disabled={!isPending}
               aria-disabled={!isPending}
