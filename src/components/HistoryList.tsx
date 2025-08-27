@@ -6,7 +6,7 @@ export default function HistoryList({ items, onSelect }: Props) {
         <section className="rounded-2xl border bg-white p-4">
             <h2 className="text-lg font-semibold mb-3">History (last 5)</h2>
             {items.length === 0 ? (
-                <p className="text-sm text-slate-500">No generations yet.</p>
+                <p className="text-sm text-slate-500" aria-live="polite">No generations yet. Run “Generate” to see items here.</p>
             ) : (
                 <ul className="grid grid-cols-2 gap-3">
                     {items.map((it, i) => (

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import UploadArea from './components/UploadArea';
+import type { UploadAreaHandle } from './components/UploadArea';
 import PromptStyleForm from './components/PromptStyleForm';
 import SummaryCard from './components/SummaryCard';
 import Spinner from './components/Spinner';
@@ -10,11 +11,11 @@ import { mockGenerate } from './lib/mockApi';
 import { runWithRetry } from './lib/retry';
 import { useAbortableRequest } from './hooks/useAbortableRequest';
 import type { GenerateResponse } from './lib/types';
-
 import { useLocalStorage } from './hooks/useLocalStorage';
 
 
 export default function App() {
+  const uploadRef = useRef<UploadAreaHandle>(null);
   // form + preview
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [prompt, setPrompt] = useState('');
@@ -58,9 +59,15 @@ export default function App() {
 
       setStatus('success');
       setHistory((prev) => [result as GenerateResponse, ...prev].slice(0, 5));
+
+      // 🆕 clear form + file input
+      setImageDataUrl(null);
+      setPrompt('');
+      setStyle('Editorial');
+      uploadRef.current?.reset();
     } catch (e: any) {
       if (e?.name === 'AbortError') {
-        setStatus('idle'); // user cancelled
+        setStatus('idle');
       } else {
         setStatus('error');
         setError(e?.message || 'Something went wrong');
@@ -78,7 +85,7 @@ export default function App() {
       <div className="mx-auto max-w-5xl p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left column */}
         <div className="space-y-4">
-          <UploadArea onFileChosen={handleFile} />
+          <UploadArea ref={uploadRef} onFileChosen={handleFile} />
 
           <PromptStyleForm
             prompt={prompt}
@@ -119,17 +126,28 @@ export default function App() {
             {isPending && <Spinner />}
           </div>
 
-          {/* Error message (announced to screen readers) */}
-          {status === 'error' && (
-            <p role="alert" className="text-sm text-red-600">
-              {error}
-            </p>
-          )}
+          {/* Accessible status area */}
+          <div role="status" aria-live="polite" className="text-sm">
+            {isPending && (
+              <span className="inline-flex items-center gap-2 text-slate-600">
+                <span>Generating…</span>
+                <Spinner />
+              </span>
+            )}
+            {status === 'success' && !isPending && (
+              <span className="text-green-700">Generation complete.</span>
+            )}
+            {status === 'error' && (
+              <span role="alert" className="text-red-700">
+                {error}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Right column */}
         <div className="space-y-4">
-          <SummaryCard imageDataUrl={imageDataUrl} prompt={prompt} style={style} />
+          <SummaryCard imageDataUrl={imageDataUrl} prompt={prompt} style={style} isPending={isPending} />
 
           <HistoryList
             items={history}
